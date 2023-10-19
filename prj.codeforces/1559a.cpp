@@ -11,16 +11,12 @@ int main(){
         for (int num_id = 0; num_id < count_nums; ++ num_id){
             int num;
             std::cin>>num;
-            if (max_elem_from_nums < num){
-                max_elem_from_nums = num;
-            }
             nums.push_back(num);
         }
-        int min_result = max_elem_from_nums;
-        for (int item : nums){
-            int result = item & max_elem_from_nums;
-            min_result = std::min(result, min_result);
+        int result = nums[0];
+        for (int num_id = 1; num_id < count_nums; ++ num_id){
+            result = result & nums[num_id];
         }
-        std::cout<<min_result<<"\n";
+        std::cout<<result<<"\n";
     }
 }
