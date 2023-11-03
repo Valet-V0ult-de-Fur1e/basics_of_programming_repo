@@ -17,10 +17,10 @@ int main(){
         }
         int output_count = count_white_now;
         for (int line_item_id = 1; line_item_id < line_size - pre_line_size; ++ line_item_id){
-            if (line[line_item_id-1] == 'W'){
+            if (line[line_item_id - 1] == 'W'){
                 count_white_now -= 1;
             }
-            if (line[line_item_id + pre_line_size] == 'W'){
+            if (line[line_item_id + pre_line_size - 1] == 'W'){
                 count_white_now += 1;
             }
             if (count_white_now < 0){
