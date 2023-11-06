@@ -142,7 +142,7 @@ Complex pow (const Complex &lhs, const double rhs) {
     return product;
 }
 
-bool testParse(const std::string &str) {
+void testParse(const std::string &str) {
     std::istringstream istrm(str);
     Complex z;
     istrm >> z;
@@ -152,40 +152,69 @@ bool testParse(const std::string &str) {
     else {
         std::cout << "Read error : " << str << " -> " << z << std::endl;
     }
-    return istrm.good();
+}
+
+void testBaseArimetic(const Complex &lhs, const Complex &rhs, const char &operation_type){
+    std::cout<<lhs<<" "<<operation_type<<" "<<rhs<<" = ";
+    switch (operation_type) {
+        case '+':
+            std::cout<<lhs + rhs;
+            break;
+        case '-':
+            std::cout<<lhs - rhs;
+            break;
+        case '*':
+            std::cout<<lhs * rhs;
+            break;
+        case '/':
+            try {
+                std::cout<<lhs / rhs;
+            }
+            catch(const std::exception& e) {
+                std::cout<<"error ";
+                std::cerr << e.what();
+            }
+            break;
+    }
+    std::cout<<std::endl;
+}
+
+void testPow(const Complex &lhs, const double &rhs){
+    std::cout<<"pow("<<lhs<<", "<<rhs<<") = "<<pow(lhs, rhs)<<std::endl;
 }
 
 int main(){
-    Complex a(3, 4);
-    Complex b(35.1, 2.4);
-    Complex c(3.2, 7.5);
-    Complex d(1.5, 8.6);
-    Complex z;
-
-    z += Complex(8.0, 4);
-    testParse("{8.9,9}");
-    testParse("{8.9, 9}");
-    testParse("{8.9,9");
-    
-    std::cout<<z<<std::endl;
-    z = pow(z, 2);
-    std::cout<<z<<std::endl;
-
-    a += b;
-    std::cout<<a<<std::endl;
-    
-    b *= c;
-    std::cout<<b<<std::endl;
-
-    c /= d;
-    std::cout<<c<<std::endl;
-
-    try {
-        d /= 0;
-        std::cout<<d<<std::endl;
-    }
-    catch (const std::range_error& error) {
-        std::cerr<<error.what();
-    }
-    return 0;
+    Complex a(13., 4.);
+    Complex b(2.3, 4.7);
+    Complex c(6.1, 3.9);
+    Complex d(8.2, 0.9);
+    Complex e(12.3, 2.3);
+    Complex f(0);
+    Complex g(6.1, -3.9);
+    double first_number = 2;
+    double second_number = 0.5;
+    double third_number = 3.5;
+    double fourth_number = 5;
+    std::cout<<"Тестирование конвертации из строки в тип и вывода в консоль:"<<std::endl;
+    testParse("{13, 6}");
+    testParse("{13 , 6}");
+    testParse("{13,6}");
+    testParse("{13 ,6}");
+    testParse("{13, 6");
+    testParse("13, 6}");
+    std::cout<<"Тестирование суммы"<<std::endl;
+    testBaseArimetic(a, b, '+');
+    std::cout<<"Тестирование вычитания"<<std::endl;
+    testBaseArimetic(c, d, '-');
+    std::cout<<"Тестирование умножения"<<std::endl;
+    testBaseArimetic(a, b, '*');
+    testBaseArimetic(c, g, '*');
+    std::cout<<"Тестирование деления"<<std::endl;
+    testBaseArimetic(e, d, '/');
+    testBaseArimetic(e, f, '/');
+    std::cout<<"Тестирование возведение в степень"<<std::endl;
+    testPow(a, first_number);
+    testPow(b, second_number);
+    testPow(c, third_number);
+    testPow(d, fourth_number);
 }
