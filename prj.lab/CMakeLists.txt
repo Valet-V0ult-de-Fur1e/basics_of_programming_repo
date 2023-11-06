@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(mironov-e-a-23-18)
+project(mironov-e-a-23-18-complex)
 
 set(CMAKE_CXX_STANDARD 20)
 
