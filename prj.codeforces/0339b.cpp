@@ -3,7 +3,7 @@ int main(){
     int count_buildings = 0;
     int count_cases = 0;
     std::cin>>count_buildings>>count_cases;
-    int count_time = 0;
+    long long count_time = 0;
     int point_id_now = 1;
     for (int case_id = 0; case_id < count_cases; case_id += 1) {
         int target_id = 0;

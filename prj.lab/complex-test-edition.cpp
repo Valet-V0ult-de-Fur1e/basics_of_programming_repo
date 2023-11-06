@@ -155,14 +155,13 @@ bool testParse(const std::string &str) {
     return istrm.good();
 }
 
-int main()
-{
-        
+int main(){
     Complex a(3, 4);
     Complex b(35.1, 2.4);
     Complex c(3.2, 7.5);
     Complex d(1.5, 8.6);
     Complex z;
+    
     z += Complex(8.0, 4);
     testParse("{8.9,9}");
     testParse("{8.9, 9}");
