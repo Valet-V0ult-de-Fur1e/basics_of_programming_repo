@@ -161,7 +161,7 @@ int main(){
     Complex c(3.2, 7.5);
     Complex d(1.5, 8.6);
     Complex z;
-    
+
     z += Complex(8.0, 4);
     testParse("{8.9,9}");
     testParse("{8.9, 9}");
@@ -180,9 +180,12 @@ int main(){
     c /= d;
     std::cout<<c<<std::endl;
 
-    d /= 0;
-    
-    std::cout<<d<<std::endl;
-
+    try {
+        d /= 0;
+        std::cout<<d<<std::endl;
+    }
+    catch (const std::range_error& error) {
+        std::cerr<<error.what();
+    }
     return 0;
 }
