@@ -7,7 +7,7 @@
 #include <string>
 
 struct Complex {
-    Complex() {}
+    Complex() {};
     explicit Complex(const double real);
     Complex(const double real, const double imaginary);
 
@@ -98,8 +98,16 @@ Complex operator+(const Complex &lhs, const Complex &rhs) {
     return sum;
 }
 
+Complex &Complex::operator-=(const Complex &rhs) {
+    re -= rhs.re;
+    im -= rhs.im;
+    return *this;
+}
+
 Complex operator-(const Complex &lhs, const Complex &rhs) {
-    return Complex(lhs.re - rhs.re, lhs.im - rhs.im);
+    Complex dif(lhs);
+    dif -= rhs;
+    return dif;
 }
 
 Complex &Complex::operator*=(const Complex &rsh) {
