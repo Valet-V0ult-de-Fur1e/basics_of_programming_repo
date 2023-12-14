@@ -7,150 +7,71 @@
 #include <string>
 
 struct Complex {
-    Complex() {};
-    explicit Complex(const double real);
-    Complex(const double real, const double imaginary);
+    [[nodiscard]] Complex() = default;
 
-    Complex &operator+=(const Complex &rhs);
-    Complex &operator+=(const double rhs) { 
-        return operator+=(Complex(rhs)); 
-    }
+    [[nodiscard]] Complex(const Complex&) = default;
 
-    Complex& operator-=(const Complex& rhs);
-    Complex& operator-=(const double rhs) {
-        return operator-=(Complex(rhs)); 
-    }
+    [[nodiscard]] explicit Complex(const double real) : re(real) { }
 
-    Complex &operator*=(const Complex& rsh);
-    Complex &operator*=(const double rhs) {
-        return operator*=(Complex(rhs));
-    };
+    [[nodiscard]] Complex(const double real, const double imaginary) : re(real), im(imaginary) {}
 
-    Complex &operator/=(const Complex& rsh);
-    Complex &operator/=(const double rsh) {
-        return operator/=(Complex(rsh));
-    };
+    Complex& operator=(const Complex&) = default;
 
-    bool operator==(const Complex &rhs) const { 
-        return (re == rhs.re) && (im == rhs.im); 
-    }
-    
-    bool operator!=(const Complex &rhs) const { 
-        return !operator==(rhs); 
-    }
+    ~Complex() = default;
 
-    std::ostream &writeTo(std::ostream &ostrm) const;
-    std::istream &readFrom(std::istream &istrm);
+    [[nodiscard]] Complex operator-() const noexcept;
 
-    double re{0.0};
-    double im{0.0};
+    [[nodiscard]] bool operator==(const Complex& rhs) const noexcept;
 
-    static const char leftBrace{'{'};
-    static const char separator{','};
-    static const char rightBrace{'}'};
+    [[nodiscard]] bool operator!=(const Complex& rhs) const noexcept;
+
+    Complex& operator+=(const Complex& rhs) noexcept;
+    Complex& operator+=(const double rhs) noexcept;
+
+    Complex& operator-=(const Complex& rhs) noexcept;
+    Complex& operator-=(const double rhs) noexcept;
+
+    Complex& operator*=(const Complex& rhs) noexcept;
+    Complex& operator*=(const double rhs) noexcept;
+
+    Complex& operator/=(const Complex& rhs);
+    Complex& operator/=(const double rhs);
+
+    [[nodiscard]] std::ostream& WriteTo(std::ostream& ostrm) const noexcept;
+    [[nodiscard]] std::istream& ReadFrom(std::istream& istrm) noexcept;
+
+    double re{ 0.0 };
+    double im{ 0.0 };
+
+    static const char leftBrace{ '{' };
+    static const char separator{ ',' };
+    static const char rightBrace{ '}' };
 };
 
-Complex::Complex(const double real) : Complex(real, 0.0) {}
+[[nodiscard]] Complex operator+(const Complex& lhs, const Complex& rhs) noexcept;
+[[nodiscard]] Complex operator+(const Complex& lhs, const double rhs) noexcept;
+[[nodiscard]] Complex operator+(const double lhs, const Complex& rhs) noexcept;
 
-Complex::Complex(const double real, const double imaginary) : re(real), im(imaginary) {}
+[[nodiscard]] Complex operator-(const Complex& lhs, const Complex& rhs) noexcept;
+[[nodiscard]] Complex operator-(const Complex& lhs, const double rhs) noexcept;
+[[nodiscard]] Complex operator-(const double lhs, const Complex& rhs) noexcept;
 
-std::istream &Complex::readFrom(std::istream &istrm) {
-    char leftBrace(0);
-    double real(0.0);
-    char comma(0);
-    double imaganary(0.0);
-    char rightBrace(0);
-    istrm >> leftBrace >> real >> comma >> imaganary >> rightBrace;
-    if (istrm.good()) {
-        if ((Complex::leftBrace == leftBrace) && (Complex::separator == comma) && (Complex::rightBrace == rightBrace)) {
-            re = real;
-            im = imaganary;
-        }
-        else {
-            istrm.setstate(std::ios_base::failbit);
-        }
-    }
-    return istrm;
+[[nodiscard]] Complex operator*(const Complex& lhs, const Complex& rhs) noexcept;
+[[nodiscard]] Complex operator*(const Complex& lhs, const double rhs) noexcept;
+[[nodiscard]] Complex operator*(const double lhs, const Complex& rhs) noexcept;
+
+[[nodiscard]] Complex operator/(const Complex& lhs, const Complex& rhs);
+[[nodiscard]] Complex operator/(const Complex& lhs, const double rhs);
+[[nodiscard]] Complex operator/(const double lhs, const Complex& rhs);
+
+[[nodiscard]] Complex pow(const Complex& lhs, const double rhs);
+
+inline std::ostream& operator<<(std::ostream& ostrm, const Complex& rhs) noexcept {
+    return rhs.WriteTo(ostrm);
 }
 
-std::ostream &Complex::writeTo(std::ostream &ostrm) const {
-    ostrm << leftBrace << re << separator << im << rightBrace;
-    return ostrm;
-}
-
-inline std::ostream &operator<<(std::ostream &ostrm, const Complex &rhs) {
-    return rhs.writeTo(ostrm);
-}
-
-inline std::istream &operator>>(std::istream &istrm, Complex &rhs) {
-    return rhs.readFrom(istrm);
-}
-
-Complex &Complex::operator+=(const Complex &rhs) {
-    re += rhs.re;
-    im += rhs.im;
-    return *this;
-}
-
-Complex operator+(const Complex &lhs, const Complex &rhs) {
-    Complex sum(lhs);
-    sum += rhs;
-    return sum;
-}
-
-Complex &Complex::operator-=(const Complex &rhs) {
-    re -= rhs.re;
-    im -= rhs.im;
-    return *this;
-}
-
-Complex operator-(const Complex &lhs, const Complex &rhs) {
-    Complex dif(lhs);
-    dif -= rhs;
-    return dif;
-}
-
-Complex &Complex::operator*=(const Complex &rsh) {
-    if (re == rsh.re && im == -1 * rsh.im) {
-        re = pow(re, 2) + pow(im, 2);
-        im = 0.0;
-    }
-    else {
-        re = re * rsh.re - im * rsh.im;
-        im = im * rsh.re + re * rsh.im;
-    }
-    return *this;
-}
-
-Complex operator*(const Complex &lhs, const Complex &rhs) {
-    Complex product(lhs);
-    product *= rhs;
-    return product;
-}
-
-Complex &Complex::operator/=(const Complex &rsh) {
-    if (rsh.re == 0 && rsh.im == 0){
-        throw std::runtime_error("Division by zero!");
-    }
-    re = (re * rsh.re + im * rsh.im) / (rsh.re * rsh.re + rsh.im * rsh.im);
-    im = (re * rsh.im - im * rsh.re) / (rsh.re * rsh.re + rsh.im * rsh.im);
-    return *this;
-}
-
-Complex operator/(const Complex &lhs, const Complex &rhs) {
-    Complex quotient(lhs);
-    quotient /= rhs;
-    return quotient; 
-}
-
-Complex pow (const Complex &lhs, const double rhs) {
-    Complex product(lhs);
-    double hypotenuse = pow((pow(lhs.re, 2) + pow(lhs.im, 2)), 0.5);
-    double corner = abs(acos(lhs.im / pow(hypotenuse, 0.5)));
-    hypotenuse = pow(hypotenuse, rhs);
-    product.re = hypotenuse * cos(rhs * corner);
-    product.im = hypotenuse * sin(rhs * corner);
-    return product;
+inline std::istream& operator>>(std::istream& istrm, Complex& rhs) noexcept {
+    return rhs.ReadFrom(istrm);
 }
 
 #endif

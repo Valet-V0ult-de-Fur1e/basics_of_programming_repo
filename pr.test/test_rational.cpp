@@ -11,6 +11,12 @@ TEST_CASE("rational ctor") {
     Rational r_int(3);
     CHECK(3 == r_int.num());
     CHECK(1 == r_int.den());
-    
+
     CHECK_THROWS(Rational(1, 0));
+
+    Rational r_a(1, 2);
+    Rational r_b(5, 10);
+    CHECK(r_a == r_b);
+
+    Rational r_c(20, 60);
 }

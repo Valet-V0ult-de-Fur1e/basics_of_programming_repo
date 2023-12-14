@@ -37,10 +37,6 @@ void testBaseArimetic(const Complex &lhs, const Complex &rhs, const char &operat
     std::cout<<std::endl;
 }
 
-void testPow(const Complex &lhs, const double &rhs){
-    std::cout<<"pow("<<lhs<<", "<<rhs<<") = "<<pow(lhs, rhs)<<std::endl;
-}
-
 int main(){
     Complex a(13., 4.);
     Complex b(2.3, 4.7);
@@ -70,9 +66,4 @@ int main(){
     std::cout<<"Тестирование деления"<<std::endl;
     testBaseArimetic(e, d, '/');
     testBaseArimetic(e, f, '/');
-    std::cout<<"Тестирование возведение в степень"<<std::endl;
-    testPow(a, first_number);
-    testPow(b, second_number);
-    testPow(c, third_number);
-    testPow(d, fourth_number);
 }
