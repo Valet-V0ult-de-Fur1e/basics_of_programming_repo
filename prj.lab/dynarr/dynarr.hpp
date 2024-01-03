@@ -3,23 +3,33 @@
 #define DYNARR_DYNARR_HPP
 
 #include <cstddef>
+#include <iostream>
 
-class DynArr {
+class DynArr
+{
 public:
-	[[nodiscard]] DynArr() = default;
-	[[nodiscard]] DynArr(const DynArr&) = default;
-	[[nodiscard]] DynArr(const std::ptrdiff_t size) : size_(size) { }
-	~DynArr() = default;
-	[[nodiscard]] DynArr& operator=(const DynArr&) = default;
+	DynArr() = default;
+	DynArr(const DynArr& dynArray);
+	explicit DynArr(const std::ptrdiff_t size);
 
-	[[nodiscard]] std::ptrdiff_t Size() const noexcept { return size_; }
-	void Resize(const std::ptrdiff_t size) { size_ = size; }
-	[[nodiscard]] float& operator[](const std::ptrdiff_t idx) { return data_; }
-	[[nodiscard]] const float& operator[](const std::ptrdiff_t idx) const { return data_; }
+
+	std::ptrdiff_t Size() const noexcept;
+	void Resize(const std::ptrdiff_t size);
+	float& operator[](const std::ptrdiff_t index);
+	const float& operator[](const std::ptrdiff_t index) const;
+
+	std::ostream& WriteTo(std::ostream& ostrm) const;
+
+	~DynArr();
+
 private:
-	std::ptrdiff_t size_ = 0;
-	float data_ = 0;
+	std::ptrdiff_t size = 0;
+	std::ptrdiff_t capacity = 0;
+	float* dataPtr = nullptr;
 };
 
+inline std::ostream& operator<<(std::ostream& ostrm, const DynArr& rhs) {
+	return rhs.WriteTo(ostrm);
+}
 
 #endif // !DYNARR_DYNARR_HPP

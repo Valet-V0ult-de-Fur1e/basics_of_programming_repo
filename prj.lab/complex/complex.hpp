@@ -64,7 +64,7 @@ struct Complex {
 [[nodiscard]] Complex operator/(const Complex& lhs, const double rhs);
 [[nodiscard]] Complex operator/(const double lhs, const Complex& rhs);
 
-[[nodiscard]] Complex pow(const Complex& lhs, const double rhs);
+[[nodiscard]] Complex pow(const Complex& lhs, const double rhs) noexcept;
 
 inline std::ostream& operator<<(std::ostream& ostrm, const Complex& rhs) noexcept {
     return rhs.WriteTo(ostrm);
