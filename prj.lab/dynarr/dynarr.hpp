@@ -12,10 +12,12 @@ public:
 	DynArr(const DynArr& dynArray);
 	explicit DynArr(const std::ptrdiff_t size);
 
-
 	std::ptrdiff_t Size() const noexcept;
+
 	void Resize(const std::ptrdiff_t size);
+
 	float& operator[](const std::ptrdiff_t index);
+
 	const float& operator[](const std::ptrdiff_t index) const;
 
 	std::ostream& WriteTo(std::ostream& ostrm) const;

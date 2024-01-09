@@ -1,5 +1,5 @@
 #include "dynarr.hpp"
-#include<stddef.h>
+#include <stddef.h>
 #include <algorithm>
 
 DynArr::DynArr(const DynArr& dynArray) {
