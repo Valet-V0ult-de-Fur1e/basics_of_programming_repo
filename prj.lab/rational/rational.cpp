@@ -14,12 +14,13 @@ Rational::Rational(int64_t numerator, int64_t denominator) {
     else {
         this->denominator = denominator;
         this->numerator = numerator;
+        Formatting();
         Reduce();
     }
 }
 
 bool Rational::operator==(const Rational& rhs) const noexcept {
-    return numerator == rhs.numerator && denominator == rhs.denominator;
+    return numerator * rhs.denominator == rhs.numerator * denominator;
 }
 
 bool Rational::operator!=(const Rational& rhs) const noexcept {
@@ -175,22 +176,38 @@ std::istream& operator>>(std::istream& istrm, Rational& rhs) noexcept {
     return rhs.ReadFrom(istrm);
 }
 
+void Rational::Formatting() {
+    if (!(numerator < 0 && denominator > 0)) {
+        if (numerator < 0 && denominator < 0) {
+                numerator *= -1;
+                denominator *= -1;
+            }
+        else if (numerator > 0 && denominator < 0) {
+            denominator *= -1;
+            numerator *= -1;
+        }
+    }
+    
+}
+
 void Rational::Reduce() {
-    int64_t a = std::abs(numerator);
-    int64_t b = denominator;
-    if (denominator < 0) {
-        b *= -1;
-        denominator *= -1;
-        numerator *= -1;
+    int64_t lsh = std::abs(numerator);
+    int64_t rsh = denominator;
+    int64_t gsd = 1;
+    while (lsh > 0 && rsh > 0) {
+        if (std::max(lsh, rsh) % std::min(lsh, rsh) == 0) {
+            gsd = std::min(lsh, rsh);
+            break;
+        }
+        if (lsh > rsh) {
+            lsh %= rsh;
+        }
+        else {
+            rsh %= lsh;
+        }
     }
-    while (a != 0 && b != 0) {
-        a > b ? a %= b : b %= a;
-    }
-    numerator /= (a + b);
-    denominator /= (a + b);
-    if (numerator == 0) {
-        denominator = 1;
-    }
+    numerator /= gsd;
+    denominator /= gsd;
 }
 
 std::ostream& Rational::WriteTo(std::ostream& ostrm) const noexcept {

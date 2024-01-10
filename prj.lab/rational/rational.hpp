@@ -44,6 +44,7 @@ private:
 	std::int64_t denominator = 1;
 	static const char separator = '/';
 	void Reduce();
+	void Formatting();
 };
 
 Rational operator+(const Rational& lhs, const Rational& rhs) noexcept;

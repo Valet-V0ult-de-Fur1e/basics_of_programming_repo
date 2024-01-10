@@ -8,6 +8,9 @@ DynArr::DynArr(const DynArr& dynArray) {
 		std::copy(dynArray.dataPtr, dynArray.dataPtr + dynArray.capacity, dataPtr);
 		Resize(dynArray.size);
 	}
+	else {
+		throw std::runtime_error("invalid size");
+	}
 }
 
 DynArr::DynArr(const std::ptrdiff_t size) {
